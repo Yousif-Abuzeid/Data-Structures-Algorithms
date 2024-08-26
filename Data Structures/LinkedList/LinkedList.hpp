@@ -207,10 +207,10 @@ public:
     }
 
     // Overloaded subscript operator to access elements by index
-    T operator[](int pos) const {
+    T& operator[](int pos) const {
         if (pos >= this->size() || pos < 0) {
             std::cout << "Index out of range" << std::endl;
-            return T(); // Return default value of T
+            throw std::out_of_range("Index out of range");
         }
         Node<T>* current = Head;
         int count = 0;
