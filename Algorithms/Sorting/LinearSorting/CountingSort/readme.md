@@ -4,8 +4,8 @@ Counting sort is a sorting algorithm that sorts the elements of an array by coun
 
 ## Algorithm
 
-1. Find the maximum element in the array.
-2. Create a count array of size `max + 1` and initialize all elements to 0.
+1. Find the maximum and minimum element in the array.
+2. Create a count array of size `(max -min)+ 1` and initialize all elements to 0.
 3. Traverse the array and increment the count of each element in the count array.
 4. Modify the count array such that each element at each index stores the sum of the previous counts.
 5. Create a temporary array of the same size as the input array.
