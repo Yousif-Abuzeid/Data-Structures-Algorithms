@@ -23,7 +23,9 @@ namespace myDataStructures {
         //helper function to insert
         std::shared_ptr<NodeTree<T>> insertHelper(std::shared_ptr<NodeTree<T>> node,T value,std::shared_ptr<NodeTree<T>> parent){
             if(!node){
+
                 std::shared_ptr<NodeTree<T>> newNode = std::make_shared<NodeTree<T>>(value,parent);
+                return newNode;
             }
             if(value<node->value){
                 node->left=insertHelper(node->left,value,node);
@@ -32,6 +34,14 @@ namespace myDataStructures {
                 node->right=insertHelper(node->right,value,node);
             }
             return node;
+
+        }
+        void inOrderHelper(std::shared_ptr<NodeTree<T>> node) const{
+            if(node){
+                inOrderHelper(node->left);
+                std::cout<<node->value<<" ";
+                inOrderHelper(node->right);
+            }
         }
         public:
        
@@ -39,15 +49,12 @@ namespace myDataStructures {
         void insert(T val){
         root = insertHelper(root,val,nullptr);
         
+        
         }
-        void inOrderHelper(std::shared_ptr<NodeTree<T>> node){
-            if(node){
-                inOrderHelper(node->left);
-                std::cout<<node->value<<" ";
-                inOrderHelper(node->right);
-            }
+        
+        void inOrderTraversal() const{
+            inOrderHelper(root);
         }
-        void inOrderTraversal() const;
 
     };
 }
