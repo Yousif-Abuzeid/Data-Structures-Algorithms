@@ -79,13 +79,47 @@ namespace myDataStructures {
                 inOrderHelper(node->right);
             }
         }
+        void preOrderHelper(std::shared_ptr<NodeTree<T>> node) const {
+            if (node) {
+                // Traverse the left subtree, visit the current node, and traverse the right subtree.
+                std::cout << node->value << " ";
+                preOrderHelper(node->left);
+                preOrderHelper(node->right);
+            }
+        }
+        void postOrderHelper(std::shared_ptr<NodeTree<T>> node) const {
+            if (node) {
+                // Traverse the left subtree, visit the current node, and traverse the right subtree.
+                postOrderHelper(node->left);
+                postOrderHelper(node->right);
+                std::cout << node->value << " ";
+            }
+        }
 
     public:
         /**
          * @brief Construct a new empty BST object.
          */
         BST() : root(nullptr) {}
-
+        /**
+         * @brief Construct a new BST object with a given root value.
+         */
+        BST(T val) : root(std::make_shared<NodeTree<T>>(val)) {}
+        /**
+         * @brief Construct a new BST object with a given initializer list of values.
+         */
+        BST(std::initializer_list<T> values) : root(nullptr) {
+            for (T val : values) {
+                insert(val);
+            }
+        }
+        /**
+         * @brief Destroy the BST object.
+         */
+        ~BST() {
+            root.reset();
+        }
+        
         /**
          * @brief Insert a new value into the tree.
          * 
@@ -100,6 +134,18 @@ namespace myDataStructures {
          */
         void inOrderTraversal() const {
             inOrderHelper(root);
+        }
+        /**
+            * @brief Perform a pre-order traversal of the tree and print the node values.
+         */
+        void preOrderTraversal() const {
+            preOrderHelper(root);
+        }
+        /**
+            * @brief Perform a post-order traversal of the tree and print the node values.
+         */
+        void postOrderTraversal() const {
+            postOrderHelper(root);
         }
     };
 
