@@ -95,6 +95,21 @@ namespace myDataStructures {
                 std::cout << node->value << " ";
             }
         }
+        /*
+         * Helper function to search for a value in the tree
+        */
+        std::shared_ptr<NodeTree<T>> searchHelper(std::shared_ptr<NodeTree<T>> node,T val){
+            if(!node){
+                return nullptr;
+            }
+            if(val>node->value){
+               return  searchHelper(node->right,val);
+            }else if(val<node->value){
+                return searchHelper(node->left, val);
+            }else{
+                return node;
+            }
+        }
 
     public:
         /**
@@ -127,6 +142,14 @@ namespace myDataStructures {
          */
         void insert(T val) {
             root = insertHelper(root, val, nullptr);
+        }
+        /**
+         * @brief Search for a value if found returns a pointer to its node 
+                    else it returns a nullptr 
+                    Use a guard before accessing it
+         */
+        std::shared_ptr<NodeTree<T>> search(T value){
+           return searchHelper(root, value);
         }
 
         /**
