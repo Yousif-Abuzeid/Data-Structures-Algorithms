@@ -1,8 +1,10 @@
 #ifndef BST_HPP
 #define BST_HPP 
 
+#include <algorithm>
 #include <iostream>
 #include <memory>
+#include <utility>
 
 namespace myDataStructures {
 
@@ -29,6 +31,36 @@ namespace myDataStructures {
             : left(nullptr), right(nullptr), parent(parent), value(val) {
             std::cout << "Created a Node with value " << val << std::endl;
         }
+        // delete copy constructor and assignment operator
+
+        NodeTree(const NodeTree<T>& other) = delete;
+        NodeTree<T>& operator=(const NodeTree<T>& other) = delete;
+        // move constructor
+        NodeTree(NodeTree<T>&& other) {
+            left = std::move(other.left);
+            right = std::move(other.right);
+            parent = std::move(other.parent);
+            value = std::move(other.value);
+        }
+        // move assignment operator
+        NodeTree<T>& operator=(NodeTree<T>&& other) {
+            if (this != &other) {
+                left = std::move(other.left);
+                right = std::move(other.right);
+                parent = std::move(other.parent);
+                value = std::move(other.value);
+            }
+            return *this;
+        }
+        std::shared_ptr<NodeTree<T>> operator=(std::shared_ptr<NodeTree<T>>&& other) {
+            left = std::move(other->left);
+            right = std::move(other->right);
+            parent = std::move(other->parent);
+            value = std::move(other->value);
+            return *this;
+        }
+        
+
     };
 
     /**
@@ -96,8 +128,9 @@ namespace myDataStructures {
             }
         }
         /*
-         * Helper function to search for a value in the tree
-        */
+         * @brief Helper function to search for a value in the tree.
+         * @param node The current node being evaluated.
+         */
         std::shared_ptr<NodeTree<T>> searchHelper(std::shared_ptr<NodeTree<T>> node,T val){
             if(!node){
                 return nullptr;
@@ -110,6 +143,16 @@ namespace myDataStructures {
                 return node;
             }
         }
+        /*
+         * @brief Helper function to get successor of a node
+        */
+        std::shared_ptr<NodeTree<T>> getSuccessor(std::shared_ptr<NodeTree<T>> node){
+            node=node->right;
+            while (node!=nullptr &&node->left!=nullptr) {
+                node=node->left;
+            }
+            return node;
+        }
 
     public:
         /**
@@ -118,10 +161,12 @@ namespace myDataStructures {
         BST() : root(nullptr) {}
         /**
          * @brief Construct a new BST object with a given root value.
+         * @param val The value to be stored in the root node.
          */
         BST(T val) : root(std::make_shared<NodeTree<T>>(val)) {}
         /**
          * @brief Construct a new BST object with a given initializer list of values.
+         * @param values The list of values to be inserted into the tree.
          */
         BST(std::initializer_list<T> values) : root(nullptr) {
             for (T val : values) {
@@ -147,9 +192,10 @@ namespace myDataStructures {
          * @brief Search for a value if found returns a pointer to its node 
                     else it returns a nullptr 
                     Use a guard before accessing it
+        * @param value The value to search for.
          */
         std::shared_ptr<NodeTree<T>> search(T value){
-           return searchHelper(root, value);
+            return searchHelper(root, value);
         }
 
         /**
@@ -170,6 +216,72 @@ namespace myDataStructures {
         void postOrderTraversal() const {
             postOrderHelper(root);
         }
+       void remove(T val) {
+    std::shared_ptr<NodeTree<T>> Successor;
+
+    // Find the node to remove
+    std::shared_ptr<NodeTree<T>> myNode = search(val);
+
+    // Check if the node exists
+    if (myNode == nullptr) {
+        std::cout << "Element Doesn't Exist" << std::endl;
+        return;
+    }
+
+    auto left = myNode->left;
+    auto right = myNode->right;
+
+    // Check if it is a leaf node (no children)
+    if (left == nullptr && right == nullptr) {
+        // If the node is a root node
+        if (myNode == root) {
+            root.reset();
+        } else if (myNode->parent->left == myNode) {
+            myNode->parent->left.reset();
+        } else {
+            myNode->parent->right.reset();
+        }
+        myNode.reset();  // Delete the node
+        return;
+    }
+
+    // If the node has two children, find the successor
+    if (left != nullptr && right != nullptr) {
+        Successor = getSuccessor(myNode);
+        T temp = Successor->value;
+        remove(Successor->value);  // Remove the successor
+        myNode->value = temp;      // Copy the successor's value to myNode
+        return;
+    }
+
+    // If the node has only one child, move the child up
+    if (left != nullptr && right == nullptr) {
+        // If myNode is root, update the root pointer
+        if (myNode == root) {
+            root = myNode->left;
+        } else if (myNode->parent->left == myNode) {
+            myNode->parent->left = std::move(myNode->left);
+        } else {
+            myNode->parent->right = std::move(myNode->left);
+        }
+        myNode.reset();
+        return;
+    }
+
+    if (left == nullptr && right != nullptr) {
+        // If myNode is root, update the root pointer
+        if (myNode == root) {
+            root = myNode->right;
+        } else if (myNode->parent->left == myNode) {
+            myNode->parent->left = std::move(myNode->right);
+        } else {
+            myNode->parent->right = std::move(myNode->right);
+        }
+        myNode.reset();
+        return;
+    }
+}
+
     };
 
 }
