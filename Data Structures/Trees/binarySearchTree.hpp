@@ -319,7 +319,19 @@ namespace myDataStructures {
         }
         return current;
     }
+   bool isBalanced(std::shared_ptr<NodeTree<T>> node ) {
+    if (node == nullptr) return true;
     
+    int leftHeight = height(node->left);
+    int rightHeight = height(node->right);
+
+    // The tree is balanced if the height difference is <= 1 and both subtrees are balanced.
+    return std::abs(leftHeight - rightHeight) <= 1 && isBalanced(node->left) && isBalanced(node->right);
+}
+    void clear(){
+        root.reset();
+        
+    }
     };
 
 }
