@@ -283,7 +283,7 @@ namespace myDataStructures {
 }
     int height (std::shared_ptr<NodeTree<T>> node){
         if(node==nullptr){
-            return 0;
+            return -1;
         }
         int leftHeight=height(node->left);
         int rightHeight=height(node->right);
@@ -294,7 +294,7 @@ namespace myDataStructures {
     }
     int depth(std::shared_ptr<NodeTree<T>> node){
         if(node==nullptr){
-            return 0;
+            return -1;
         }
         int depth=0;
         while(node->parent!=nullptr){
@@ -303,6 +303,23 @@ namespace myDataStructures {
         }
         return depth;
     }
+    std::shared_ptr<NodeTree<T>> findMin() const{
+        std::shared_ptr<NodeTree<T>> current = root;
+        while (current && current->left) {
+            current=current->left;
+        
+        }
+        return current;
+    }
+    std::shared_ptr<NodeTree<T>> findMax() const{
+        std::shared_ptr<NodeTree<T>> current =root;
+        while (current && current->right) {
+            current = current->right;
+        
+        }
+        return current;
+    }
+    
     };
 
 }
