@@ -292,6 +292,17 @@ namespace myDataStructures {
    std::shared_ptr<NodeTree<T>> getRoot(){
         return root;
     }
+    int depth(std::shared_ptr<NodeTree<T>> node){
+        if(node==nullptr){
+            return 0;
+        }
+        int depth=0;
+        while(node->parent!=nullptr){
+            depth++;
+            node=node->parent;
+        }
+        return depth;
+    }
     };
 
 }
