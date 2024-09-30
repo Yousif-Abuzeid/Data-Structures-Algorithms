@@ -281,7 +281,17 @@ namespace myDataStructures {
         return;
     }
 }
-
+    int height (std::shared_ptr<NodeTree<T>> node){
+        if(node==nullptr){
+            return 0;
+        }
+        int leftHeight=height(node->left);
+        int rightHeight=height(node->right);
+        return std::max(leftHeight,rightHeight)+1;
+    }
+   std::shared_ptr<NodeTree<T>> getRoot(){
+        return root;
+    }
     };
 
 }
