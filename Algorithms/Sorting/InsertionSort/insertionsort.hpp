@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <functional>
 
 /*
@@ -14,16 +15,16 @@
 
 namespace myDataStructures {
     template <typename RandomAccessIterator, typename Comparator = std::less<>>
-    void InsertionSort(RandomAccessIterator start, RandomAccessIterator end, Comparator comp = Comparator()) {
-        for (auto i = start + 1; i < end; ++i) {
+    void InsertionSort(RandomAccessIterator start,RandomAccessIterator end,Comparator comp = Comparator()){
+        for(auto i = start+1;i<end;i++){
             auto key = *i;
-            auto j = i - 1;
-            while (j >= start && comp(key, *j)) {
-                *(j + 1) = *j;
-                if (j == start) break;  // Prevent underflow for iterator types
-                --j;
+            auto j = i-1;
+            while(j>=start && comp(key,*j)){
+                *(j+1) = *j;
+                j--;
             }
-            *(j + (j >= start ? 1 : 0)) = key;
+            *(j+1) = key;
         }
     }
+    
 }
