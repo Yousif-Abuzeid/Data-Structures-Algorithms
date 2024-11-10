@@ -4,13 +4,13 @@
 #include <functional>
 
 /*
-    @Yousif-Abuzeid
-    @brief: Insertion Sort Algorithm
-    @param start: Iterator pointing to the start of the range
-    @param end: Iterator pointing to the end of the range
-    @param comp: Comparator function to determine the sorting order (defaults to std::less)
-    @return: void
-    @timeComplexity: O(n^2)
+  *   @Yousif-Abuzeid
+  * @brief: Insertion Sort Algorithm
+  *  @param start: Iterator pointing to the start of the range
+  *  @param end: Iterator pointing to the end of the range
+  *  @param comp: Comparator function to determine the sorting order (defaults to std::less)
+  *  @return: void
+  *  @timeComplexity: O(n^2)
 */
 
 namespace myDataStructures {
